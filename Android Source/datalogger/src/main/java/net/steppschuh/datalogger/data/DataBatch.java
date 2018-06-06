@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import net.steppschuh.datalogger.messaging.GoogleApiMessenger;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -62,18 +64,20 @@ public class DataBatch implements Serializable {
         }*/
 
         // check if trimming is needed
-        if (dataList == null || dataList.size() < capacity) {
+        if (dataList == null || dataList.size() < 2) {
             return;
         }
 
         // remove oldest data
         //Add albert
-        while (dataList.size() > 10 && status == true) {
-            final int total_row = dataList.size();
+        while (dataList.size() > 0 && status == true) {
+
+            final int total_row = 2;
             Log.i("SensorLoggerAlbert", "total_row = " + total_row);
             final String fileprefix = "export";
-            final String date = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.getDefault()).format(new Date());
-            final String filename = String.format("%s_%s.txt", source, fileprefix);
+            final String date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
+            final String exacttimer = new SimpleDateFormat("HHmmss", Locale.getDefault()).format(new Date());
+            final String filename = String.format("%s_%s.txt", source, fileprefix, date);
 
             // final String directory = getContext().getApplicationContext().getFilesDir().getAbsolutePath();// + "/Albert";
             final String directory = Environment.getExternalStorageDirectory().getAbsolutePath();// + "/sdcard";
@@ -95,6 +99,8 @@ public class DataBatch implements Serializable {
                 // Write the string to the file
                 for (int i = 1; i < total_row; i++) {
                     StringBuffer sb = new StringBuffer(source);
+                    sb.append("\t");
+                    sb.append(exacttimer);
                     sb.append("\t");
                     sb.append(String.valueOf(dataList.get(i).getTimestamp()));
                     sb.append("\t");
