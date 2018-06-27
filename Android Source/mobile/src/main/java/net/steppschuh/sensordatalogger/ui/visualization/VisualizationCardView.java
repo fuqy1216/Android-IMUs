@@ -70,14 +70,14 @@ public class VisualizationCardView extends RelativeLayout {
         headingTextView = (TextView) findViewById(R.id.headingText);
         subHeadingTextView = (TextView) findViewById(R.id.subHeadingText);
 
-        valueLeftTextView = (TextView) findViewById(R.id.valueLeftText);
+        //valueLeftTextView = (TextView) findViewById(R.id.valueLeftText);
         valueCenterTextView = (TextView) findViewById(R.id.valueCenterText);
-        valueRightTextView = (TextView) findViewById(R.id.valueRightText);
+        //valueRightTextView = (TextView) findViewById(R.id.valueRightText);
 
-        valueLeftButton = (ImageButton) findViewById(R.id.valueLeftButton);
-        valueRightButton = (ImageButton) findViewById(R.id.valueRightButton);
+        //valueLeftButton = (ImageButton) findViewById(R.id.valueLeftButton);
+        //valueRightButton = (ImageButton) findViewById(R.id.valueRightButton);
 
-        OnClickListener previousDimensionClickedListener = new OnClickListener() {
+        /*OnClickListener previousDimensionClickedListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 int current = chartView.getCurrentDataDimension();
@@ -105,7 +105,7 @@ public class VisualizationCardView extends RelativeLayout {
             }
         };
         valueRightTextView.setOnClickListener(nextDimensionClickedListener);
-        valueRightButton.setOnClickListener(nextDimensionClickedListener);
+        valueRightButton.setOnClickListener(nextDimensionClickedListener);*/
 // add by albert
 
         OnClickListener export = new OnClickListener() {
@@ -168,7 +168,7 @@ public class VisualizationCardView extends RelativeLayout {
 
         moreImageButton.setOnClickListener(export);
 
-        chartView = (ChartView) findViewById(R.id.chartView);
+        //chartView = (ChartView) findViewById(R.id.chartView);
     }
 
     @Override
@@ -196,23 +196,20 @@ public class VisualizationCardView extends RelativeLayout {
                 for (int valueIndex = 0; valueIndex < latestValues.length; valueIndex++) {
                     lastestReadableValues[valueIndex] = String.format("%.02f", latestValues[valueIndex]);
                 }
-                if (chartView.getDataDimension() == ChartView.DATA_DIMENSION_ALL) {
-                    valueCenterTextView.setText(chartView.getCurrentDimensionName());
-                } else {
-                    valueCenterTextView.setText(lastestReadableValues[chartView.getCurrentDataDimension()]);
-                }
-                valueRightTextView.setText(lastestReadableValues[chartView.getNextDataDimension()]);
-                valueLeftTextView.setText(lastestReadableValues[chartView.getPreviousDataDimension()]);
+                    valueCenterTextView.setText(String.format(lastestReadableValues[0],lastestReadableValues[1],lastestReadableValues[2]));
+
+               /* valueRightTextView.setText(lastestReadableValues[chartView.getNextDataDimension()]);
+                valueLeftTextView.setText(lastestReadableValues[chartView.getPreviousDataDimension()]);*/
             } else {
-                valueCenterTextView.setText(chartView.getCurrentDimensionName());
-                valueRightTextView.setText(ChartView.getDimensionName(chartView.getNextDataDimension()));
-                valueLeftTextView.setText(ChartView.getDimensionName(chartView.getPreviousDataDimension()));
+                valueCenterTextView.setText("1");
+               /* valueRightTextView.setText(ChartView.getDimensionName(chartView.getNextDataDimension()));
+                valueLeftTextView.setText(ChartView.getDimensionName(chartView.getPreviousDataDimension()));*/
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        new Thread(new Runnable() {
+/*        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -225,7 +222,7 @@ public class VisualizationCardView extends RelativeLayout {
                     ex.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
     }
 
     public static List<Data> getProcessedDataList(List<Data> unprocessedData) {

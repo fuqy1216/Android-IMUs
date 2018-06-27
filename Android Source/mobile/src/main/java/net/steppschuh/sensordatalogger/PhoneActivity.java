@@ -638,8 +638,10 @@ public boolean Recordingstatus;
             //update the card data
             DataBatch visualizationDataBatch = visualizationCardData.getDataBatch();
             if (visualizationDataBatch == null) {
+                String deviceName = app.getGoogleApiMessenger().getNodeName(sourceNodeId);
                 visualizationDataBatch = dataBatch;
                 visualizationDataBatch.setCapacity(DataBatch.CAPACITY_UNLIMITED);
+                visualizationDataBatch.setDevice(deviceName);
                 visualizationCardData.setDataBatch(visualizationDataBatch);
             } else {
                 visualizationDataBatch.addData(dataBatch.getDataList());

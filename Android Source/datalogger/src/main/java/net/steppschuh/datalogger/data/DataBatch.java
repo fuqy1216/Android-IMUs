@@ -29,6 +29,7 @@ public class DataBatch implements Serializable {
     public static final int CAPACITY_DEFAULT = 10;
 
     private int type;
+    private String device;
     private String source;
     private List<Data> dataList;
     private int capacity = CAPACITY_DEFAULT;
@@ -56,6 +57,9 @@ public class DataBatch implements Serializable {
         this.source = source;
     }
 
+    public void setDevice(String device) {
+        this.device = device;
+    }
 
     private void trimDataToCapacity(Boolean status) {
         // check if there's a capacity limit
@@ -70,18 +74,18 @@ public class DataBatch implements Serializable {
 
         // remove oldest data
         //Add albert
-        while (dataList.size() > 0 && status == true) {
+        while (dataList.size() > 0 && status == true && device != null) {
 
             final int total_row = 2;
             Log.i("SensorLoggerAlbert", "total_row = " + total_row);
-            final String fileprefix = "export";
+            final String fileprefix = device;
             final String date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
             final String exacttimer = new SimpleDateFormat("HHmmss", Locale.getDefault()).format(new Date());
-            final String filename = String.format("%s_%s.txt", source, fileprefix, date);
+            final String filename = String.format("%s_%s.txt", fileprefix, source, date);
 
             // final String directory = getContext().getApplicationContext().getFilesDir().getAbsolutePath();// + "/Albert";
-            final String directory = Environment.getExternalStorageDirectory().getAbsolutePath();// + "/sdcard";
-            final String direc = "/storage/emulated/0";
+            final String directory = Environment.getExternalStorageDirectory().getAbsolutePath() + "/data";
+            //final String direc = "/storage/emulated/0";
             final File logfile = new File(directory, filename);
             final File logPath = logfile.getParentFile();
 
@@ -98,9 +102,7 @@ public class DataBatch implements Serializable {
 
                 // Write the string to the file
                 for (int i = 1; i < total_row; i++) {
-                    StringBuffer sb = new StringBuffer(source);
-                    sb.append("\t");
-                    sb.append(exacttimer);
+                    StringBuffer sb = new StringBuffer(exacttimer);
                     sb.append("\t");
                     sb.append(String.valueOf(dataList.get(i).getTimestamp()));
                     sb.append("\t");
