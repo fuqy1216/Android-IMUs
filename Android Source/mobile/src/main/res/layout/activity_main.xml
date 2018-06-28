@@ -43,19 +43,6 @@
     </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/PlayButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/floatingActionButton"
-        android:layout_marginEnd="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_toLeftOf="@+id/floatingActionButton"
-        android:layout_toStartOf="@+id/floatingActionButton"
-        android:clickable="true"
-        android:src="@drawable/ic_media_play"
-        android:tint="@android:color/white" />
-
-    <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,5 +55,17 @@
         android:clickable="true"
         android:src="@drawable/ic_list_black_48dp"
         android:tint="@android:color/white" />
+
+    <Switch
+        android:id="@+id/record"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="78dp"
+        android:text="Record"
+        android:textColor="@android:color/background_light"
+        tools:background="?attr/colorAccent" />
 
 </RelativeLayout>

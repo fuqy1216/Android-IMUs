@@ -16,7 +16,9 @@ public class Data {
     }
 
     public Data(String source, float[] values) {
-        this(values);
+        //this(values);
+        timestamp = System.currentTimeMillis();
+        this.values = values;
         this.source = source;
     }
 

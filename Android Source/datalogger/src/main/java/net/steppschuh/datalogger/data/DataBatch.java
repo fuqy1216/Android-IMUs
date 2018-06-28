@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.content.Context;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,12 +28,16 @@ public class DataBatch implements Serializable {
 
     public static final int CAPACITY_UNLIMITED = -1;
     public static final int CAPACITY_DEFAULT = 10;
+    public static final int package_size = 1;
+    private int[] timearray = new int[package_size];
     private String Display;
     private int type;
+    private int lastsize = 0;
     private String device;
     private String source;
     private List<Data> dataList;
     private int capacity = CAPACITY_DEFAULT;
+    private boolean counter;
 
     public DataBatch() {
         dataList = new ArrayList<>();
@@ -61,6 +66,10 @@ public class DataBatch implements Serializable {
         this.device = device;
     }
 
+    public void setRecording(boolean counter) {
+        this.counter = counter;
+    }
+
     private void trimDataToCapacity(Boolean status) {
         // check if there's a capacity limit
        /*if (capacity == CAPACITY_UNLIMITED) {
@@ -68,56 +77,59 @@ public class DataBatch implements Serializable {
         }*/
 
         // check if trimming is needed
-        if (dataList == null || dataList.size() < 2) {
+        if (dataList == null || dataList.size() < package_size){
             return;
         }
 
         // remove oldest data
         //Add albert
-        while (dataList.size() > 0 && status == true && device != null) {
+
+        while (dataList.size() > 0  && device != null) {
 
             final int total_row = dataList.size();
             Log.i("SensorLoggerAlbert", "total_row = " + total_row);
             final String fileprefix = device;
             final String date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
             final String exacttimer = new SimpleDateFormat("HHmmss", Locale.getDefault()).format(new Date());
-            final String filename = String.format("%s_%s.txt", fileprefix, source, date);
+
+            final String filename = String.format("%s_%s_%s.txt", fileprefix, source, date);
 
             // final String directory = getContext().getApplicationContext().getFilesDir().getAbsolutePath();// + "/Albert";
             final String directory = Environment.getExternalStorageDirectory().getAbsolutePath() + "/data";
             //final String direc = "/storage/emulated/0";
             final File logfile = new File(directory, filename);
             final File logPath = logfile.getParentFile();
-            if(total_row>0) {
-                setDisplay(String.format("%.2f  %.2f  %.2f", dataList.get(total_row-1).getValues()[0], dataList.get(total_row-1).getValues()[1], dataList.get(total_row-1).getValues()[2]));
-            }
+                setDisplay(String.format("%.1f  %.1f  %.1f", dataList.get(total_row-1).getValues()[0], dataList.get(total_row-1).getValues()[1], dataList.get(total_row-1).getValues()[2]));
             if (!logPath.isDirectory() && !logPath.mkdirs()) {
                 Log.e("SensorLoggerAlbert", "Could not create directory for log files");
             }
 /*
                 int permissionCheck = ContextCompat.checkSelfPermission(getContext().getApplicationContext().getCurrentActivity(),
                         android.Manifest.permission.WRITE_CALENDAR);*/
-            try {
-                FileWriter filewriter = new FileWriter(logfile, true);
-                BufferedWriter bw = new BufferedWriter(filewriter);
+            if(counter == true) {
+                try {
+                    FileWriter filewriter = new FileWriter(logfile, true);
+                    BufferedWriter bw = new BufferedWriter(filewriter);
 
 
-                // Write the string to the file
-                for (int i = 0; i < total_row; i++) {
-                    StringBuffer sb = new StringBuffer(exacttimer);
-                    sb.append("\t");
-                    sb.append(String.valueOf(dataList.get(i).getTimestamp()));
-                    sb.append("\t");
-                    sb.append(String.valueOf(dataList.get(i).getValues()[0]));
-                    sb.append("\t");
-                    sb.append(String.valueOf(dataList.get(i).getValues()[1]));
-                    sb.append("\t");
-                    sb.append(String.valueOf(dataList.get(i).getValues()[2]));
-                    sb.append("\n");
-                    bw.append(sb.toString());
-                }
-                bw.flush();
-                bw.close();
+                    // Write the string to the file
+                    for (int i = 0; i < total_row; i++) {
+                        if(i>0 && dataList.get(i).getTimestamp()==dataList.get(i-1).getTimestamp())
+                            continue;
+                        StringBuffer sb = new StringBuffer(exacttimer);
+                        sb.append("\t");
+                        sb.append(String.valueOf(dataList.get(i).getTimestamp()));
+                        sb.append("\t");
+                        sb.append(String.valueOf(dataList.get(i).getValues()[0]));
+                        sb.append("\t");
+                        sb.append(String.valueOf(dataList.get(i).getValues()[1]));
+                        sb.append("\t");
+                        sb.append(String.valueOf(dataList.get(i).getValues()[2]));
+                        sb.append("\n");
+                        bw.append(sb.toString());
+                    }
+                    bw.flush();
+                    bw.close();
                         /*Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                         emailIntent.setType("**");
 
@@ -127,8 +139,9 @@ public class DataBatch implements Serializable {
                         getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 
                         Log.i("SensorloggerAlbert", "export finished!");*/
-            } catch (IOException ioe) {
-                Log.e("SensorloggerAlbert", "IOException while writing Logfile");
+                } catch (IOException ioe) {
+                    Log.e("SensorloggerAlbert", "IOException while writing Logfile");
+                }
             }
             dataList.clear();
         }

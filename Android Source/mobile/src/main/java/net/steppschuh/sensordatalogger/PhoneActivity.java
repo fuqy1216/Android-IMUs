@@ -20,8 +20,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.wearable.Wearable;
@@ -52,7 +54,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class PhoneActivity extends AppCompatActivity implements DataChangedListener, ReachabilityChecker.NodeReachabilityUpdateReceiver, SensorSelectionDialogFragment.SelectedSensorsUpdatedListener {
-public boolean Recordingstatus;
+public boolean counter;
     private static final String TAG = PhoneActivity.class.getSimpleName();
 
     private static final String KEY_SENSOR_DATA_REQUESTS = "sensorDataRequests";
@@ -80,7 +82,7 @@ public boolean Recordingstatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Recordingstatus = false;
+        counter = false;
         // get reference to global application
         app = (PhoneApp) getApplicationContext();
 
@@ -139,19 +141,18 @@ public boolean Recordingstatus;
                 showSensorSelectionDialog();
             }
         });
-        CheckPlay = (ImageButton) findViewById(R.id.PlayButton);
-        CheckPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Recordingstatus = !Recordingstatus;
-                if(Recordingstatus == true)
-                {
-                    CheckPlay.setImageResource(R.drawable.ic_media_pause);
+        Switch recordswitch = (Switch) findViewById(R.id.record);
+
+        recordswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    counter = true;
+                } else {
+                    counter = false;
+                    // The toggle is disabled
                 }
-                else
-                {
-                    CheckPlay.setImageResource(R.drawable.ic_media_play);
-                }
+
             }
         });
 
@@ -645,6 +646,7 @@ public boolean Recordingstatus;
                 visualizationCardData.setDataBatch(visualizationDataBatch);
             } else {
                 cardListAdapter.invalidateVisualization(visualizationCardData.getKey());
+                visualizationDataBatch.setRecording(counter);
                 visualizationDataBatch.addData(dataBatch.getDataList());
             }
 
