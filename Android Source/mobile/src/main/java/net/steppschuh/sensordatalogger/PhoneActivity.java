@@ -644,10 +644,11 @@ public boolean Recordingstatus;
                 visualizationDataBatch.setDevice(deviceName);
                 visualizationCardData.setDataBatch(visualizationDataBatch);
             } else {
+                cardListAdapter.invalidateVisualization(visualizationCardData.getKey());
                 visualizationDataBatch.addData(dataBatch.getDataList());
             }
 
-            cardListAdapter.invalidateVisualization(visualizationCardData.getKey());
+
         } catch (Exception ex) {
             Log.w(TAG, "Unable to render data batch: " + ex.getMessage());
             ex.printStackTrace();

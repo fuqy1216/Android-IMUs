@@ -58,7 +58,7 @@ public class SensorDataManager {
         }
         Log.v(TAG, "Registering sensor event listener for " + sensor.getType() + " - " + sensor.getName());
         //sensorManager.registerListener(getSensorEventListener(sensor.getType()), sensor, SensorManager.SENSOR_DELAY_FASTEST); Albert
-        sensorManager.registerListener(getSensorEventListener(sensor.getType()), sensor, 1000);
+        sensorManager.registerListener(getSensorEventListener(sensor.getType()), sensor, 10000);
     }
 
     public void unregisterAllSensorEventListeners() {

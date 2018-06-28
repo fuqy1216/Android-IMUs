@@ -178,25 +178,25 @@ public class VisualizationCardView extends RelativeLayout {
     }
 
     public void renderData() {
-        if (data == null || data.getDataBatch() == null) {
+/*        if (data == null || data.getDataBatch() == null) {
             return;
-        }
+        }*/
 
         try {
             headingTextView.setText(data.getHeading());
             subHeadingTextView.setText(data.getSubHeading());
 
-            if (data.getDataBatch().getNewestData() == null) {
+/*            if (data.getDataBatch().getNewestData() == null) {
                 return;
-            }
+            }*/
 
             if (showDimensionValues) {
-                float[] latestValues = data.getDataBatch().getNewestData().getValues();
+                /*float[] latestValues = data.getDataBatch().getNewestData().getValues();
                 String[] lastestReadableValues = new String[latestValues.length];
                 for (int valueIndex = 0; valueIndex < latestValues.length; valueIndex++) {
                     lastestReadableValues[valueIndex] = String.format("%.02f", latestValues[valueIndex]);
-                }
-                    valueCenterTextView.setText(String.format(lastestReadableValues[0],lastestReadableValues[1],lastestReadableValues[2]));
+                }*/
+                    valueCenterTextView.setText(data.getDataBatch().getDisplay());
 
                /* valueRightTextView.setText(lastestReadableValues[chartView.getNextDataDimension()]);
                 valueLeftTextView.setText(lastestReadableValues[chartView.getPreviousDataDimension()]);*/

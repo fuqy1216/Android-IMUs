@@ -27,7 +27,7 @@ public class DataBatch implements Serializable {
 
     public static final int CAPACITY_UNLIMITED = -1;
     public static final int CAPACITY_DEFAULT = 10;
-
+    private String Display;
     private int type;
     private String device;
     private String source;
@@ -76,7 +76,7 @@ public class DataBatch implements Serializable {
         //Add albert
         while (dataList.size() > 0 && status == true && device != null) {
 
-            final int total_row = 2;
+            final int total_row = dataList.size();
             Log.i("SensorLoggerAlbert", "total_row = " + total_row);
             final String fileprefix = device;
             final String date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
@@ -88,7 +88,9 @@ public class DataBatch implements Serializable {
             //final String direc = "/storage/emulated/0";
             final File logfile = new File(directory, filename);
             final File logPath = logfile.getParentFile();
-
+            if(total_row>0) {
+                setDisplay(String.format("%.2f  %.2f  %.2f", dataList.get(total_row-1).getValues()[0], dataList.get(total_row-1).getValues()[1], dataList.get(total_row-1).getValues()[2]));
+            }
             if (!logPath.isDirectory() && !logPath.mkdirs()) {
                 Log.e("SensorLoggerAlbert", "Could not create directory for log files");
             }
@@ -101,7 +103,7 @@ public class DataBatch implements Serializable {
 
 
                 // Write the string to the file
-                for (int i = 1; i < total_row; i++) {
+                for (int i = 0; i < total_row; i++) {
                     StringBuffer sb = new StringBuffer(exacttimer);
                     sb.append("\t");
                     sb.append(String.valueOf(dataList.get(i).getTimestamp()));
@@ -163,6 +165,13 @@ public class DataBatch implements Serializable {
             return null;
         }
         return dataList.get(dataList.size() - 1);
+    }
+
+    public String getDisplay(){
+        return Display;
+    }
+    public void setDisplay(String display){
+        Display = display;
     }
 
     @JsonIgnore
