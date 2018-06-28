@@ -95,7 +95,7 @@ public class SensorDataManager {
             public void onSensorChanged(SensorEvent event) {
                 float[] values = new float[event.values.length];
                 System.arraycopy(event.values, 0, values, 0, event.values.length);
-                Data data = new Data(event.sensor.getName(), values);
+                Data data = new Data(event.sensor.getName(), values, System.currentTimeMillis());
                 getDataBatch(sensorType).addData(data);
             }
 

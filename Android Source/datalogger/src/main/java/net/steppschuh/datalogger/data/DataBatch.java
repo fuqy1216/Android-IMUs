@@ -95,7 +95,7 @@ public class DataBatch implements Serializable {
             final String filename = String.format("%s_%s_%s.txt", fileprefix, source, date);
 
             // final String directory = getContext().getApplicationContext().getFilesDir().getAbsolutePath();// + "/Albert";
-            final String directory = Environment.getExternalStorageDirectory().getAbsolutePath() + "/data";
+            final String directory = Environment.getExternalStorageDirectory().getAbsolutePath()/* + "/data"*/;
             //final String direc = "/storage/emulated/0";
             final File logfile = new File(directory, filename);
             final File logPath = logfile.getParentFile();

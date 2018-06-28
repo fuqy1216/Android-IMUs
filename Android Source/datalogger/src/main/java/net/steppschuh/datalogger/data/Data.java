@@ -15,9 +15,9 @@ public class Data {
         this.values = values;
     }
 
-    public Data(String source, float[] values) {
+    public Data(String source, float[] values, long time) {
         //this(values);
-        timestamp = System.currentTimeMillis();
+        timestamp = time;
         this.values = values;
         this.source = source;
     }
