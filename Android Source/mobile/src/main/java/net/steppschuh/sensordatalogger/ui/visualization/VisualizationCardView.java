@@ -36,7 +36,7 @@ public class VisualizationCardView extends RelativeLayout {
 
     boolean showDimensionValues = true;
 
-    private ImageButton moreImageButton;
+   // private ImageButton moreImageButton;
 
     private TextView headingTextView;
     private TextView subHeadingTextView;
@@ -65,7 +65,7 @@ public class VisualizationCardView extends RelativeLayout {
     private void initializeLayout(Context context) {
         LayoutInflater.from(context).inflate(R.layout.visualization_card, this);
 
-        moreImageButton = (ImageButton) findViewById(R.id.moreButton);
+        //moreImageButton = (ImageButton) findViewById(R.id.moreButton);
 
         headingTextView = (TextView) findViewById(R.id.headingText);
         subHeadingTextView = (TextView) findViewById(R.id.subHeadingText);
@@ -108,7 +108,7 @@ public class VisualizationCardView extends RelativeLayout {
         valueRightButton.setOnClickListener(nextDimensionClickedListener);*/
 // add by albert
 
-        OnClickListener export = new OnClickListener() {
+        /*OnClickListener export = new OnClickListener() {
             @Override
             public void onClick(View v) {
                     DataBatch ExportBatch = new DataBatch(data.getDataBatch());
@@ -126,9 +126,9 @@ public class VisualizationCardView extends RelativeLayout {
                     if (!logPath.isDirectory() && !logPath.mkdirs()) {
                         Log.e("SensorLoggerAlbert", "Could not create directory for log files");
                     }
-/*
+*//*
                 int permissionCheck = ContextCompat.checkSelfPermission(getContext().getApplicationContext().getCurrentActivity(),
-                        android.Manifest.permission.WRITE_CALENDAR);*/
+                        android.Manifest.permission.WRITE_CALENDAR);*//*
                     try {
                         FileWriter filewriter = new FileWriter(logfile);
                         BufferedWriter bw = new BufferedWriter(filewriter);
@@ -149,7 +149,8 @@ public class VisualizationCardView extends RelativeLayout {
                         }
                         bw.flush();
                         bw.close();
-                        /*Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        filewriter.close();
+                        *//*Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
                         emailIntent.setType("**");
 
                         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
@@ -157,7 +158,7 @@ public class VisualizationCardView extends RelativeLayout {
                         emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(logfile));
                         getContext().startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 
-                        Log.i("SensorloggerAlbert", "export finished!");*/
+                        Log.i("SensorloggerAlbert", "export finished!");*//*
                     } catch (IOException ioe) {
                         Log.e("SensorloggerAlbert", "IOException while writing Logfile");
                     }
@@ -166,7 +167,7 @@ public class VisualizationCardView extends RelativeLayout {
                 }
             };
 
-        moreImageButton.setOnClickListener(export);
+        moreImageButton.setOnClickListener(export);*/
 
         //chartView = (ChartView) findViewById(R.id.chartView);
     }
