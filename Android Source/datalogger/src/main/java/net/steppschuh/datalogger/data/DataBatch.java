@@ -118,13 +118,13 @@ public class DataBatch implements Serializable {
                             continue;
                         StringBuffer sb = new StringBuffer(exacttimer);
                         sb.append("\t");
-                        sb.append(String.valueOf(dataList.get(i).getTimestamp()));
+                        sb.append(String.valueOf(dataList.get(i).getTimestamp()%1000));
                         sb.append("\t");
-                        sb.append(String.valueOf(dataList.get(i).getValues()[0]));
+                        sb.append(String.format("%.2f",dataList.get(i).getValues()[0]));
                         sb.append("\t");
-                        sb.append(String.valueOf(dataList.get(i).getValues()[1]));
+                        sb.append(String.format("%.2f",dataList.get(i).getValues()[1]));
                         sb.append("\t");
-                        sb.append(String.valueOf(dataList.get(i).getValues()[2]));
+                        sb.append(String.format("%.2f",dataList.get(i).getValues()[2]));
                         sb.append("\n");
                         bw.append(sb.toString());
                     }
